@@ -1,8 +1,9 @@
 import math
+from os import environ
 
 from django.core.paginator import Paginator
 
-RECIPES_PER_PAGE = 9
+RECIPES_PER_PAGE = environ.get('PER_PAGE', 9)
 
 
 def make_pagination_range(
