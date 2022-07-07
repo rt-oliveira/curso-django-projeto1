@@ -2,6 +2,7 @@ from unittest import skip
 
 from django.urls import resolve, reverse
 from recipes import views
+from utils.pagination import RECIPES_PER_PAGE
 
 from .teste_recipe_base import RecipeTestBase
 
@@ -46,3 +47,47 @@ class RecipeHomeViewTest(RecipeTestBase):
             'No recipes found here :( .',
             response.content.decode('utf-8')
         )
+
+    def test_if_has_not_pagination_when_less_than_minimum_recipes_per_page(
+        self
+    ):
+        # Se ao ter menos que o mínimo de receitas, não terá paginação
+        for i in range(RECIPES_PER_PAGE):
+            response = self.client.get(reverse('recipes:home'))
+            conteudo = response.content.decode('utf-8')
+
+            self.assertNotIn('pagination-content', conteudo)
+
+            self.make_recipe(
+                slug=f'receita-teste-{i}',
+                author_data={'username': f'usuario{i}'}
+            )
+
+    def test_if_has_pagination_when_have_more_than_recipes_per_page(
+        self
+    ):
+        self.criar_recipes_em_lote(RECIPES_PER_PAGE + 1)
+
+        response = self.client.get(reverse('recipes:home'))
+        conteudo = response.content.decode('utf-8')
+        self.assertIn('pagination-content', conteudo)
+
+    def test_if_current_page_is_correct(self):
+        QTD_PAGINAS = 5
+        self.criar_recipes_em_lote(RECIPES_PER_PAGE * QTD_PAGINAS)
+
+        response = self.client.get(
+            reverse('recipes:home') + f'?page={QTD_PAGINAS}')
+        conteudo = response.context['pagination_range']['current_page']
+
+        self.assertEqual(conteudo, QTD_PAGINAS)
+
+    def test_if_show_first_page_when_current_page_is_incorrect(self):
+        QTD_PAGINAS = 2
+        self.criar_recipes_em_lote(RECIPES_PER_PAGE * QTD_PAGINAS)
+
+        response = self.client.get(
+            reverse('recipes:home') + '?page=B')
+        conteudo = response.context['pagination_range']['current_page']
+
+        self.assertEqual(1, conteudo)

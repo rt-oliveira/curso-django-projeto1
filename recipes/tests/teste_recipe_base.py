@@ -60,3 +60,10 @@ class RecipeTestBase(TestCase):
             preparation_steps_is_html=preparation_steps_is_html,
             is_published=is_published,
         )
+
+    def criar_recipes_em_lote(self, quantidade):
+        for i in range(quantidade):
+            self.make_recipe(
+                slug=f'receita-teste-{i}',
+                author_data={'username': f'usuario{i}'}
+            )

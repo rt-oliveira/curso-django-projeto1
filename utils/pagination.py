@@ -2,6 +2,8 @@ import math
 
 from django.core.paginator import Paginator
 
+RECIPES_PER_PAGE = 9
+
 
 def make_pagination_range(
     page_range, qtd_paginas, current_page
