@@ -12,7 +12,9 @@ def home(request):
         is_published=True
     ).order_by('-id')
 
+    messages.error(request, 'Epa, você foi pesquisar algo que eu vi.')
     messages.success(request, 'Epa, você foi pesquisar algo que eu vi.')
+    messages.info(request, 'Epa, você foi pesquisar algo que eu vi.')
 
     page_obj, pagination_range = make_pagination(
         request, recipes, RECIPES_PER_PAGE)
