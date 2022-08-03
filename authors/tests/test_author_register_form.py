@@ -1,5 +1,6 @@
+from unittest import TestCase
+
 from authors.forms import RegisterForm
-from django.test import TestCase
 from parameterized import parameterized
 
 
@@ -22,7 +23,9 @@ class AuthorRegisterFormUnitTest(TestCase):
         )
 
     @parameterized.expand([
-        ('username', 'Obrigatório. 150 caracteres ou menos. Letras, números e @/./+/-/_ apenas.'),
+        ('username', (
+            'Obrigatório. 150 caracteres ou menos. '
+            'Letras, números e @/./+/-/_ apenas.')),
         ('password', (
             'Password must have at least one uppercase letter, '
             'one lowercase letter and one number. The length should be '
