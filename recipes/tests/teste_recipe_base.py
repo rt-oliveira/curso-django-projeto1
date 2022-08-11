@@ -59,11 +59,15 @@ class RecipeMixin:
         )
 
     def criar_recipes_em_lote(self, quantidade):
+        recipes = []
         for i in range(quantidade):
-            self.make_recipe(
+            recipe = self.make_recipe(
+                title=f'Recipe title {i}',
                 slug=f'receita-teste-{i}',
                 author_data={'username': f'usuario{i}'}
             )
+            recipes.append(recipe)
+        return recipes
 
 
 class RecipeTestBase(TestCase, RecipeMixin):
