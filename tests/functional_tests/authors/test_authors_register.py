@@ -101,7 +101,7 @@ class AuthorsRegisterTest(AuthorsBaseTest):
             form = self.get_form()
 
             self.assertIn(
-                'Password and password2 must be equalddd',
+                'Password and password2 must be equal',
                 form.text
             )
 
