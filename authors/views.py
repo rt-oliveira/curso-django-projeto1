@@ -7,6 +7,7 @@ from django.urls import reverse
 from recipes.models import Recipe
 
 from .forms import LoginForm, RegisterForm
+from .forms.recipe_form import AuthorRecipeForm
 
 
 # Create your views here.
@@ -108,12 +109,18 @@ def dashboard_recipe_edit(request, id):
         is_published=False,
         author=request.user,
         pk=id
-    )
+    ).first()
 
     if not recipe:
         raise Http404()
 
+    form = AuthorRecipeForm(
+        request.POST or None,
+        instance=recipe
+    )
+
     return render(request,
                   'authors/pages/dashboard_recipe.html',
                   {
+                      "form": form
                   })
