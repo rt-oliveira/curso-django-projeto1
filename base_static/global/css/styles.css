@@ -453,3 +453,12 @@ h1, h2, h3, h4, h5, h6 {
 .span-2 {
 	grid-column: span 2;
 }
+
+img {
+	max-width: 100%;
+}
+
+a {
+	color: var(--color-primary);
+	text-decoration: none;
+}
