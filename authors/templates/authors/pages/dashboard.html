@@ -6,6 +6,7 @@
 <div class="main-content center container">
 	<h2>Dashboard ({{ user }})</h2>
 	{% include 'authors/partials/login_message.html' %}
+	{% include 'global/partials/messages.html'%}
 
 	<div class="authors-dashboard-container">
 		<h3>Your recipes</h3>
@@ -13,7 +14,14 @@
 		<ul>
 			{% for recipe in recipes %}
 				<li>
-					<a href="{% url 'authors:dashboard_recipe_edit' recipe.id %}">{{ recipe.title }}</a>
+					<a href="{% url 'authors:dashboard_recipe_edit' recipe.id %}">{{ recipe.title }}</a> -
+					<form 
+					action="{% url 'authors:dashboard_recipe_delete' recipe.id %}"
+					class="inline-form form-delete"
+					method="POST">
+						{% csrf_token %}
+						<button class="plaintext-button" type="submit">❌</button>
+					</form>
 				</li>
 			{% empty %}
 				<li>
@@ -23,7 +31,5 @@
 		</ul>
 	</div>
 </div>
-
-{% include 'global/partials/messages.html'%}
 
 {% endblock content %}
