@@ -12,7 +12,6 @@ class RecipeListViewBase(ListView):
     context_object_name = 'recipes'
     paginate_by = None
     ordering = ['-id']
-    template_name = 'recipes/pages/home.html'
 
     def get_queryset(self, *args, **kwargs):
         qs = super().get_queryset()
@@ -31,6 +30,24 @@ class RecipeListViewBase(ListView):
         ctx.update({'recipes': page_obj, 'pagination_range': pagination_range})
 
         return ctx
+
+
+class RecipeListViewHome(RecipeListViewBase):
+    template_name = 'recipes/pages/home.html'
+
+
+class RecipeListViewCategory(RecipeListViewBase):
+    template_name = 'recipes/pages/category.html'
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+
+        qs = qs.filter(
+            category__id=self.kwargs.get('category_id'),
+            is_published=True
+        )
+
+        return qs
 
 
 def home(request):
