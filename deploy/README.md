@@ -130,3 +130,7 @@ No servidor, em app_repo, faça pull:
 cd ~/app_repo
 git pull origin <branch>
 ```
+
+## Configurando o nginx
+
+Use o arquivo e as explicações disponibilizadas na aula.
