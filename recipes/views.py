@@ -18,6 +18,7 @@ class RecipeListViewBase(ListView):
         qs = qs.filter(
             is_published=True
         )
+        qs = qs.select_related('author', 'category')
 
         return qs
 
