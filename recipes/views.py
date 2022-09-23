@@ -1,6 +1,7 @@
 from django.db.models import Q
 from django.forms.models import model_to_dict
 from django.http import Http404, JsonResponse
+from django.shortcuts import render
 from django.views.generic import DetailView, ListView
 from utils.pagination import RECIPES_PER_PAGE, make_pagination
 
@@ -150,3 +151,10 @@ class RecipeDetailApi(RecipeDetail):
             recipe_dict,
             safe=False
         )
+
+
+def theory(request, *args, **kwargs):
+    return render(
+        request,
+        'recipes/pages/theory.html'
+    )
