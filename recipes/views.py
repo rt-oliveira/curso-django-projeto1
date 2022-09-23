@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.forms.models import model_to_dict
 from django.http import Http404, JsonResponse
@@ -154,8 +155,10 @@ class RecipeDetailApi(RecipeDetail):
 
 
 def theory(request, *args, **kwargs):
-    recipes = Recipe.objects.all()
-    recipes = recipes.filter(title__icontains='Teste')
+    try:
+        recipes = Recipe.objects.get(pk=1)
+    except ObjectDoesNotExist:
+        recipes = None
 
     context = {
         'recipes': recipes
