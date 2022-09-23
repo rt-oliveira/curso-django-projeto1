@@ -1,4 +1,3 @@
-from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.forms.models import model_to_dict
 from django.http import Http404, JsonResponse
@@ -155,10 +154,14 @@ class RecipeDetailApi(RecipeDetail):
 
 
 def theory(request, *args, **kwargs):
-    try:
-        recipes = Recipe.objects.get(pk=1)
-    except ObjectDoesNotExist:
-        recipes = None
+    recipes = Recipe.objects.filter(
+        Q(title__icontains='da',
+          id__gt=3,
+          is_published=True) |
+        Q(
+            id__gt=1000
+        )
+    )[:10]
 
     context = {
         'recipes': recipes
