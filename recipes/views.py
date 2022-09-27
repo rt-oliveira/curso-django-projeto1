@@ -1,4 +1,5 @@
-from django.db.models import F, Q
+from django.db.models import Q
+from django.db.models.aggregates import Avg, Count, Max, Min, Sum
 from django.forms.models import model_to_dict
 from django.http import Http404, JsonResponse
 from django.shortcuts import render
@@ -154,10 +155,18 @@ class RecipeDetailApi(RecipeDetail):
 
 
 def theory(request, *args, **kwargs):
-    recipes = Recipe.objects.defer('is_published')
+    recipes = Recipe.objects.values('id', 'title')[:5]
+    dados_recipes = recipes.aggregate(
+        qtd=Count('id'),
+        max_id=Max('id'),
+        min_id=Min('id'),
+        avg_id=Avg('id'),
+        soma_id=Sum('id')
+    )
 
     context = {
-        'recipes': recipes
+        'recipes': recipes,
+        'dados_recipes': dados_recipes
     }
 
     return render(
