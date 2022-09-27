@@ -1,5 +1,6 @@
-from django.db.models import Q
+from django.db.models import F, Q, Value
 from django.db.models.aggregates import Avg, Count, Max, Min, Sum
+from django.db.models.functions import Concat
 from django.forms.models import model_to_dict
 from django.http import Http404, JsonResponse
 from django.shortcuts import render
@@ -155,7 +156,14 @@ class RecipeDetailApi(RecipeDetail):
 
 
 def theory(request, *args, **kwargs):
-    recipes = Recipe.objects.values('id', 'title')[:5]
+    recipes = Recipe.objects.all().annotate(
+        author_full_name=Concat(F('author__first_name'),
+                                Value(' '),
+                                F('author__last_name'),
+                                Value(' ('),
+                                F('author__username'),
+                                Value(')'))
+    )[:5]
     dados_recipes = recipes.aggregate(
         qtd=Count('id'),
         max_id=Max('id'),
