@@ -156,7 +156,7 @@ class RecipeDetailApi(RecipeDetail):
 
 
 def theory(request, *args, **kwargs):
-    recipes = Recipe.objects.all().annotate(
+    recipes = Recipe.objects.get_published().annotate(
         author_full_name=Concat(F('author__first_name'),
                                 Value(' '),
                                 F('author__last_name'),
