@@ -154,8 +154,7 @@ class RecipeDetailApi(RecipeDetail):
 
 
 def theory(request, *args, **kwargs):
-    recipes = Recipe.objects.filter(title__icontains='teste') \
-        .values('id', 'title', 'author__username')[:10]
+    recipes = Recipe.objects.defer('is_published')
 
     context = {
         'recipes': recipes
