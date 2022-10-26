@@ -41,7 +41,7 @@ urlpatterns = [
 
     path('recipes/api/token/',
          TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('recipes/api/token/refresh',
+    path('recipes/api/token/refresh/',
          TokenRefreshView.as_view(), name='token_refresh'),
     path('recipes/api/token/verify/',
          TokenVerifyView.as_view(), name='token_verify'),
